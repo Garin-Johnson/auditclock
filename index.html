@@ -1,1 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Steph's Audit Burndown Clock</title>
+	<link href = "index.css" rel ="stylesheet" type ="text/css" />
+<style>
+
+/* CSS Reset */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: url(https://contribly-public.s3.amazonaws.com/media/3657a79e-eb4a-e0f9-182c-4709fae40eb1-mediumoriginalaspectdouble.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center the page horizontally */
+  align-items: center; /* Center the page vertically */
+  font-family: 'Lato', sans-serif;
+}
+
+#timer {
+  font-size: 50px;
+}
+</style>
+</head>
+<body>
+<h2><font color="pink">Steph's Audit Burndown Clock</font></h2>
+  <h1 id="timer">00 : 00 . 000</h1>
+  <div>
+    <button id="toggle">Start</button>
+    <button id="reset">Reset</button>
+	<!--Infinity Clock-->
+	<br>
+	<br>
+  <button onClick="myTimer = setInterval(myCounter, 1000)">Start Infinity Clock!</button>
+
+<p id="demo"><h2><font color="pink">Infinity Clock!</font></h2></p>
+
+<button onClick="clearInterval(myTimer)">Stop Infinity Clock!</button>
+	
+  </div>
+  
+  <script src="js/stopwatch.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+  
+  //Main javascript
+ var timer = document.getElementById('timer');
+var toggleBtn = document.getElementById('toggle');
+var resetBtn = document.getElementById('reset');
+
+var watch = new Stopwatch(timer);
+
+function start() {
+  toggleBtn.textContent = 'Stop';
+  watch.start();
+}
+
+function stop() {
+  toggleBtn.textContent = 'Start';
+  watch.stop();
+}
+
+toggleBtn.addEventListener('click', function() {
+  watch.isOn ? stop() : start();
+});
+
+resetBtn.addEventListener('click', function() {
+  watch.reset();
+});
+
+//stopwatch.js
+function Stopwatch(elem) {
+  var time = 0;
+  var offset;
+  var interval;
+
+  function update() {
+    if (this.isOn) {
+      time += delta();
+    }
+    
+    elem.textContent = timeFormatter(time);
+  }
+
+  function delta() {
+    var now = Date.now();
+    var timePassed = now - offset;
+
+    offset = now;
+
+    return timePassed;
+  }
+
+  function timeFormatter(time) {
+    time = new Date(time);
+
+    var minutes = time.getMinutes().toString();
+    var seconds = time.getSeconds().toString();
+    var milliseconds = time.getMilliseconds().toString();
+
+    if (minutes.length < 2) {
+      minutes = '0' + minutes;
+    }
+
+    if (seconds.length < 2) {
+      seconds = '0' + seconds;
+    }
+
+    while (milliseconds.length < 3) {
+      milliseconds = '0' + milliseconds;
+    }
+
+    return minutes + ' : ' + seconds + ' . ' + milliseconds;
+  }
+
+  this.start = function() {
+    interval = setInterval(update.bind(this), 10);
+    offset = Date.now();
+    this.isOn = true;
+  };
+
+  this.stop = function() {
+    clearInterval(interval);
+    interval = null;
+    this.isOn = false;
+  };
+
+  this.reset = function() {
+    time = 0;
+    update();
+  };
+
+  this.isOn = false;
+}
+
+//Infinity Clock Javascript
+var c = 0;
+function myCounter() {
+    document.getElementById("demo").innerHTML = ++c;
+}
+
+  </script
+</body>
+</html>
 
